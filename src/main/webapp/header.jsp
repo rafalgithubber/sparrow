@@ -36,7 +36,7 @@
     </div>
     <div class="lh-100">
         <h6 class="mb-0 lh-100 tab">
-            <a class="text-white" href="messages">Messages</a>
+            <a class="text-white" href="messages">Messages</a> <%-- message bez /na początku oznacza serwlet (-przemapowany z adesu URL),jeżeli /message.jsp = konkretny plik) --%>
         </h6>
     </div>
     <div class="lh-100">

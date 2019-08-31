@@ -4,7 +4,9 @@ import model.User;
 
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class UserDAO extends AbstractDAO {
 
@@ -12,7 +14,7 @@ public class UserDAO extends AbstractDAO {
     return entityManager.createQuery("select u from User u").getResultList();
   }
 
-  public void createUser(User user) {
+  public void saveUser(User user) {
     hibernateUtil.save(user);
   }
 
@@ -49,6 +51,13 @@ public class UserDAO extends AbstractDAO {
     Query query = entityManager.createQuery("select distinct follows from User u where u.id = :userId");
     return query.setParameter("userId", userId).getResultList();
   }
+  public Set<String> getFollowingUsers2String(String userLogin){
+    Set<String> output=new HashSet<>();
+    getFollowingUsers(userLogin).forEach(u->output.add(u.getName()));
+
+    return output;
+  }
+
 
   public List<User> getNotFollowedUsers(String followerLogin) {
     List<User> users = entityManager.createQuery("select u from User u").getResultList();
@@ -57,5 +66,31 @@ public class UserDAO extends AbstractDAO {
     return users;
   }
 
+  public void addFollower(String sourceLogin,String followerLogin){
+    User sourceUser,followerUser;
+
+    sourceUser = getUserByLogin(sourceLogin);
+    followerUser = getUserByLogin(followerLogin);
+
+    sourceUser.getFollows().add(followerUser);
+
+    saveUser(sourceUser);
+  }
+
+  public void removeFollower(String sourceLogin,String removeLogin){
+    User sourceUser,remoweUser;
+
+    sourceUser = getUserByLogin(sourceLogin);
+    remoweUser = getUserByLogin(removeLogin);
+
+    if (sourceUser.getFollows().contains(remoweUser)){
+      sourceUser.getFollows().remove(remoweUser);
+    }
+    else {
+      System.out.println("Nie ma takiego FOLLOWERSA");
+    }
+
+    saveUser(sourceUser);
+  }
 
 }

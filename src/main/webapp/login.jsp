@@ -25,6 +25,12 @@
 <%--    <strong>Failure!</strong> <%=request.getAttribute("error")%>--%>
 <%--    </div>--%>
     <hr>
+    <c:if test='<%=request.getAttribute("hasError") == "true" %>'>
+        <div class="alert alert-warning">
+            <strong>Failure!</strong> <%=request.getAttribute("error")%>
+        </div>
+    </c:if>
+
     <form action="login" method="POST">
     <div class="form-group">
     <div class="input-group">

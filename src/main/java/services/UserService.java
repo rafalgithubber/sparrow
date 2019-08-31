@@ -29,7 +29,7 @@ public class UserService {
     } else if (isUserLoginAlreadyExist(user.getLogin())){
       return LOGIN_ERROR;
     }
-    userDAO.createUser(user);
+    userDAO.saveUser(user);
     return SUCCESS;
   }
 

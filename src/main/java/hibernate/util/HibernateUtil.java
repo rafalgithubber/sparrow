@@ -20,6 +20,10 @@ public class HibernateUtil {
         return instance;
     }
 
+    public static void closeManagerFactory(){
+        getInstance().entityManagerFactory.close();
+    }
+
     public void saveByHibernateSession(Object t) {
         Session session = entityManager.unwrap(Session.class);
         Transaction transaction = session.beginTransaction();
