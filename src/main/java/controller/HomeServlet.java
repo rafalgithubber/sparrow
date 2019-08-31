@@ -13,7 +13,7 @@ import java.io.IOException;
 @WebServlet(name = "homeServlet", urlPatterns = {"", "/login"})
 public class HomeServlet extends HttpServlet {
     private UserDAO userDAO;
-    private static final String USERNAME = "username";
+    private static final String LOGIN = "login";
     private static final String PASSWORD = "password";
     private static final String REMEMBER = "remember";
 
@@ -34,11 +34,18 @@ public class HomeServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String username = req.getParameter(USERNAME);
+        String login = req.getParameter(LOGIN);
         String password = req.getParameter(PASSWORD);
-        String remember = req.getParameter(REMEMBER);
+       // String remember = req.getParameter(REMEMBER);
 
-        resp.getWriter().println("User =  " + username + "Password = " + password);
+
+        if(userDAO.isUserExist(login, password)){
+            req.getRequestDispatcher("users").forward(req, resp);
+        } else {
+            req.setAttribute("hasError", "true");
+            req.setAttribute("error", "Username or password incorrect");
+            req.getRequestDispatcher("/login.jsp").forward(req, resp);
+        }
     }
 }
 
